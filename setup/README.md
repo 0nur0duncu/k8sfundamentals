@@ -75,7 +75,7 @@ $ sudo ufw allow 10250/tcp
 $ sudo ufw allow 10259/tcp
 $ sudo ufw allow 10257/tcp
 $ sudo apt-get update
-$ sudo apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common conntrack iproute2
+$ sudo apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common conntrack iproute2 apache2-utils nfs-common open-iscsi jq
 $ sudo mkdir -p -m 755 /etc/apt/keyrings
 ### Eğer Kubernetes 1.31'den başka bir versiyon yüklemek isterseniz aşağıdaki iki komuttaki v1.31 kısımlarını düzeltin ####
 $ curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
