@@ -203,7 +203,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - 5.178.111.179/32
+  - <ip>/32
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
