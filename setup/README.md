@@ -98,8 +98,10 @@ $ sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-addr
 $ sudo vim /etc/hosts
    IP_Addreses         Dns_Name  
 
-   192.168.1.7         kubernetes.dev.env.test
-   192.168.1.7         k8s-master-1    
+  127.0.0.1 localhost
+  
+  192.168.1.7 api.k8s.halidefterim.com
+  192.168.1.7 k8s-master-1
 
 $ sudo vim /etc/systemd/resolved.conf
   [Resolve]
