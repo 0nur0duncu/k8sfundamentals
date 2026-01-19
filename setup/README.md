@@ -113,6 +113,17 @@ $ sudo kubeadm init --control-plane-endpoint="kubernetes.dev.env.test:6443" --ap
 ```
 # Sorun olması durumunda sıfırlamak için
 $ sudo kubeadm reset -f
+# Kalan static pod manifestlerini sil
+$ sudo rm -rf /etc/kubernetes/manifests
+$ sudo rm -rf /etc/kubernetes/pki
+
+# CNI ve kubelet kalıntılarını temizle
+$ sudo rm -rf /etc/cni/net.d
+$ sudo rm -rf /var/lib/kubelet/*
+
+# Çalışan kubelet’i yeniden başlat
+$ sudo systemctl restart containerd
+$ sudo systemctl restart kubelet
 ```
 
 ```
