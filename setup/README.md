@@ -150,26 +150,26 @@ $ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.31
 ```
 
 ```
-kubectl taint nodes --all node-role.kubernetes.io/control-plane-
-kubectl taint nodes --all node-role.kubernetes.io/master-
+$ kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+$ kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
 ```
 # Metrics Server (HPA/kubectl top için)
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
 
 ```
 # Rancher kurulumu
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
-kubectl get pods -n cert-manager
-helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
-helm repo update
-kubectl create namespace cattle-system
-helm install rancher rancher-latest/rancher \
+$ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
+$ kubectl get pods -n cert-manager
+$ helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
+$ helm repo update
+$ kubectl create namespace cattle-system
+$ helm install rancher rancher-latest/rancher \
 --namespace cattle-system \
 --set hostname=rancher.<domain> \
 --set replicas=1
-kubectl -n cattle-system rollout status deploy/rancher
-kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{ "\n" }}'
+$ kubectl -n cattle-system rollout status deploy/rancher
+$ kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{ "\n" }}'
 ```
