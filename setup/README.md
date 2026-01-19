@@ -163,6 +163,7 @@ $ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/la
 # Rancher kurulumu
 $ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+$ kubectl get pods -n ingress-nginx
 $ kubectl get pods -n cert-manager
 $ helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
 $ helm repo update
@@ -173,4 +174,79 @@ $ helm install rancher rancher-latest/rancher \
 --set replicas=1
 $ kubectl -n cattle-system rollout status deploy/rancher
 $ kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{ "\n" }}'
+```
+
+```
+$ kubectl apply -f - <<EOF
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: your-email@example.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+EOF
+
+$ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/main/config/manifests/metallb-native.yaml
+$ kubectl apply -f - <<EOF
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: default-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 5.178.111.179/32
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2
+  namespace: metallb-system
+EOF
+# yüklü nginx-ingress varsa
+$ kubectl delete svc ingress-nginx-controller -n ingress-nginx
+$ kubectl get svc -n ingress-nginx
+
+$ kubectl -n ingress-nginx scale deployment ingress-nginx-controller --replicas=2
+$ kubectl get pods -n ingress-nginx -o wide
+
+# Rancher Ingress
+$ kubectl apply -f - <<EOF
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rancher
+  namespace: cattle-system
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - rancher.<domain>
+      secretName: tls-rancher-ingress
+  rules:
+    - host: rancher.<domain>
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rancher
+                port:
+                  number: 80
+EOF
+
+
+$ kubectl get ingress -n cattle-system
 ```
