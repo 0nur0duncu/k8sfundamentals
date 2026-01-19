@@ -162,6 +162,7 @@ $ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/la
 ```
 # Rancher kurulumu
 $ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 $ kubectl get pods -n cert-manager
 $ helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
 $ helm repo update
