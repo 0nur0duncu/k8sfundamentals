@@ -101,10 +101,12 @@ $ sudo vim /etc/hosts
    192.168.1.7         kubernetes.dev.env.test
    192.168.1.7         k8s-master-1    
 
-$ sudo vim /etc/resolv.conf
+$ sudo vim /etc/systemd/resolved.conf
+  [Resolve]
+  DNS=8.8.8.8 1.1.1.1
 
-  nameserver 8.8.8.8
-  nameserver 1.1.1.1
+$ sudo systemctl restart systemd-resolved
+$ sudo kubeadm init --pod-network-cidr=10.244.0.0/16
 
 # Create cluster
 $ sudo kubeadm init --control-plane-endpoint="kubernetes.dev.env.test:6443" --apiserver-advertise-address=192.168.1.7 --node-name k8s-master-1 --pod-network-cidr=10.244.0.0/16
