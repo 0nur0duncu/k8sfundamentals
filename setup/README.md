@@ -100,8 +100,8 @@ $ sudo vim /etc/hosts
 
   127.0.0.1 localhost
   
-  192.168.1.7 api.k8s.halidefterim.com
-  192.168.1.7 k8s-master-1
+  <ip> kubernetes.dev.env.test
+  <ip> k8s-master-1
 
 $ sudo vim /etc/systemd/resolved.conf
   [Resolve]
@@ -111,7 +111,7 @@ $ sudo systemctl restart systemd-resolved
 $ sudo kubeadm init --pod-network-cidr=10.244.0.0/16
 
 # Create cluster
-$ sudo kubeadm init --control-plane-endpoint="kubernetes.dev.env.test:6443" --apiserver-advertise-address=192.168.1.7 --node-name k8s-master-1 --pod-network-cidr=10.244.0.0/16
+$ sudo kubeadm init --control-plane-endpoint="kubernetes.dev.env.test:6443" --apiserver-advertise-address=<ip> --node-name k8s-master-1 --pod-network-cidr=192.168.0.0/16
 ```
 
 ```
@@ -137,8 +137,16 @@ $ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
 ```
-$ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/tigera-operator.yaml
-$ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/custom-resources.yaml
+$ sudo apt-get install curl gpg apt-transport-https --yes
+$ curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+$ echo "deb [signed-by=/usr/share/keyrings/helm.gpg] https://packages.buildkite.com/helm-linux/helm-debian/any/ any main" | $ sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+$ sudo apt-get update
+$ sudo apt-get install helm
+```
+
+```
+$ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.31.3/manifests/tigera-operator.yaml
+$ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.31.3/manifests/custom-resources.yaml
 ```
 
 ```
