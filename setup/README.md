@@ -162,6 +162,15 @@ $ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/la
 ```
 # Rancher kurulumu
 $ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.28/deploy/local-path-storage.yaml
+
+# yüklü nginx-ingress varsa
+$ kubectl delete svc ingress-nginx-controller -n ingress-nginx
+$ kubectl get svc -n ingress-nginx
+
+$ kubectl -n ingress-nginx scale deployment ingress-nginx-controller --replicas=2
+$ kubectl get pods -n ingress-nginx -o wide
+
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 $ kubectl get pods -n ingress-nginx
 $ kubectl get pods -n cert-manager
@@ -211,12 +220,6 @@ metadata:
   name: l2
   namespace: metallb-system
 EOF
-# yüklü nginx-ingress varsa
-$ kubectl delete svc ingress-nginx-controller -n ingress-nginx
-$ kubectl get svc -n ingress-nginx
-
-$ kubectl -n ingress-nginx scale deployment ingress-nginx-controller --replicas=2
-$ kubectl get pods -n ingress-nginx -o wide
 
 # Rancher Ingress
 $ kubectl apply -f - <<EOF
