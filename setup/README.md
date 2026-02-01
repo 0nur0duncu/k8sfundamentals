@@ -41,7 +41,7 @@ $ sudo sysctl --system
 ```
 $ sudo swapoff -a
 $ free -m
-$ sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+$ sudo sed -i '/swap/d' /etc/fstab
 ```
 
 **2:** containerd kurulumu
