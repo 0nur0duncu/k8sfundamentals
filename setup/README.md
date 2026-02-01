@@ -75,11 +75,11 @@ $ sudo ufw allow 10250/tcp
 $ sudo ufw allow 10259/tcp
 $ sudo ufw allow 10257/tcp
 $ sudo apt-get update
-$ sudo apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common conntrack iproute2 apache2-utils nfs-common open-iscsi jq
+$ sudo apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common conntrack iproute2 apache2-utils nfs-common open-iscsi jq zip
 $ sudo mkdir -p -m 755 /etc/apt/keyrings
-### Eğer Kubernetes 1.31'den başka bir versiyon yüklemek isterseniz aşağıdaki iki komuttaki v1.31 kısımlarını düzeltin ####
-$ curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-$ echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+### Eğer Kubernetes 1.31'den başka bir versiyon yüklemek isterseniz aşağıdaki iki komuttaki v1.35 kısımlarını düzeltin ####
+$ curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+$ echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 $ sudo apt-get update
 $ sudo apt-get install -y kubelet kubeadm kubectl
 $ sudo apt-mark hold kubelet kubeadm kubectl
@@ -92,7 +92,6 @@ $ sudo kubeadm config images pull
 # ya da birden fazla CRI soket varsa
 $ sudo kubeadm config images pull --cri-socket unix:///run/containerd/containerd.sock
 
-$ sudo kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address=<ip> --control-plane-endpoint=<ip>
 ```
 ```
 $ sudo vim /etc/hosts
@@ -100,7 +99,7 @@ $ sudo vim /etc/hosts
 
   127.0.0.1 localhost
   
-  <ip> kubernetes.dev.env.test
+  <ip> kubernetes.prod.env
   <ip> k8s-master-1
 
 $ sudo vim /etc/systemd/resolved.conf
