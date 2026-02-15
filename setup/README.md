@@ -110,7 +110,7 @@ $ sudo systemctl restart systemd-resolved
 $ sudo kubeadm init --pod-network-cidr=10.244.0.0/16
 
 # Create cluster
-$ sudo kubeadm init --control-plane-endpoint="kubernetes.dev.env.test:6443" --apiserver-advertise-address=<ip> --node-name k8s-master-1 --pod-network-cidr=192.168.0.0/16
+$ sudo kubeadm init --control-plane-endpoint="kubernetes.prod.env:6443" --apiserver-advertise-address=<ip> --node-name k8s-master-1 --pod-network-cidr=192.168.0.0/16
 ```
 
 ```
